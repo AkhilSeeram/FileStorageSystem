@@ -13,9 +13,4 @@ public class FileStorageSystemApplication {
 		SpringApplication.run(FileStorageSystemApplication.class, args);
 	}
 
-	@Bean
-	public PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
-
 }

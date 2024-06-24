@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface FileService {
-    File saveFile(MultipartFile file, User owner) throws IOException;
+    File saveFile(MultipartFile file, String email) throws IOException;
     byte[] downloadFile(Long fileId);
     FileVersion saveFileVersion(Long fileId, MultipartFile file) throws IOException;
     List<FileVersion> getFileVersions(Long fileId);

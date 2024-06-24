@@ -14,12 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FileServiceImpl implements FileService {
-    private FileRepository fileRepository;
-    private FileVersionRepository fileVersionRepository;
-    private UserRepository userRepository;
+    private final FileRepository fileRepository;
+    private final FileVersionRepository fileVersionRepository;
+    private final UserRepository userRepository;
 
     public FileServiceImpl(FileRepository fileRepository,FileVersionRepository fileVersionRepository, UserRepository userRepository){
         this.fileRepository=fileRepository;
@@ -28,11 +29,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public File saveFile(MultipartFile file, User owner) throws IOException {
+    public File saveFile(MultipartFile file, String email) throws IOException {
+        Optional<User> user=userRepository.findByEmail(email);
         File fileEntity = new File();
         fileEntity.setFilename(file.getOriginalFilename());
         fileEntity.setData(file.getBytes());
-        fileEntity.setOwner(owner);
+        fileEntity.setOwner(user.get());
         return fileRepository.save(fileEntity);
     }
 
@@ -45,7 +47,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public FileVersion saveFileVersion(Long fileId, MultipartFile file) throws IOException {
         File originalFile = fileRepository.findById(fileId).orElseThrow(() -> new EntityNotFoundException("File not found"));
-        List<FileVersion> versions = fileVersionRepository.findByFileIdOrderByVersionNumberDesc(fileId);
+        List<FileVersion> versions = fileVersionRepository.findByOriginalFileOrderByVersionNumberDesc(originalFile);
         int versionNumber = versions.isEmpty() ? 1 : versions.get(0).getVersionNumber() + 1;
         FileVersion fileVersion = new FileVersion();
         fileVersion.setOriginalFile(originalFile);
@@ -57,7 +59,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<FileVersion> getFileVersions(Long fileId) {
-        return fileVersionRepository.findByFileIdOrderByVersionNumberDesc(fileId);
+        File originalFile = fileRepository.findById(fileId).orElseThrow(() -> new EntityNotFoundException("File not found"));
+        return fileVersionRepository.findByOriginalFileOrderByVersionNumberDesc(originalFile);
     }
 
     @Override

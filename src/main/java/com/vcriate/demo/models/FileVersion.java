@@ -15,7 +15,7 @@ public class FileVersion {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "file_id")
+    @JoinColumn(name = "original_file_id", nullable = false)
     private File originalFile;
 
     private int versionNumber;

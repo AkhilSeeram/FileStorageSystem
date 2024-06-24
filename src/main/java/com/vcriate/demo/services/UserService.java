@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface UserService {
     public User signupUser(String email, String password);
-    public User loginUser(String email, String password);
-    public Set<File> getFilesOfUser(Long userId);
-    public Set<File> getFilesSharedToUser(Long userId);
+    public String loginUser(String email, String password);
+    public Set<File> getFilesOfUser(String email);
+    public Set<File> getFilesSharedToUser(String email);
 }
