@@ -22,7 +22,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestBody MultipartFile file) throws IOException {
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String email= SecurityContextHolder.getContext().getAuthentication().getName();
         try {
             fileService.saveFile(file, email);
@@ -38,7 +38,7 @@ public class FileController {
         return ResponseEntity.ok(data);
     }
     @PostMapping("/version/{fileId}")
-    public ResponseEntity<String> uploadFileVersion(@PathVariable Long fileId, @RequestParam("file") MultipartFile file){
+    public ResponseEntity<String> uploadFileVersion(@PathVariable Long fileId, @RequestParam("file") MultipartFile file ){
         try {
             fileService.saveFileVersion(fileId, file);
             return ResponseEntity.ok("File version uploaded successfully");
