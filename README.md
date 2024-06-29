@@ -15,9 +15,6 @@ Session Management using JWT, file sharing, and versioning.
 
 ## Additional Features Aimed But Not Implemented
 
-I have implemented all the mandatory requirements mentioned in the assignment.However, I aimed to include the following
-features as well but could not due to time constraints. 
-
 - Instead of Storing Files in AWS S3 or Local file management System and use that metadata as columns in Relational
   Databases. I directly stored files in MySQL database itself.
 - Planned to create UI using HTML,CSS and React.
